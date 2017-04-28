@@ -1,0 +1,119 @@
+*CodeRunner.txt*
+==============================================================================
+  CodeRunner                                                        *CodeRunner*
+==============================================================================
+
+Author:      Wang Xianzhong   wxz1120339073@gmail.com        *CodeRunner_Author*
+Repository:  https://github.com/xianzhon/vim-code-runner *CodeRunner_Repository*
+
+Goal:        To run code snippet easily
+Version:     1.0
+
+License:     Public domain, no restrictions whatsoever
+Contribute:  Please report any bugs or suggestions
+             to the address above.
+
+
+==============================================================================
+  Table of Contents                                        *CodeRunner_Contents*
+==============================================================================
+
+
+             1. Motivation.................|CodeRunner_Motivation|
+             2. Keymaps....................|CodeRunner_Keymaps|
+             3. Options....................|CodeRunner_Options|
+                3.1 Summary................|CodeRunner_OptionsSummary|
+                3.2 Details................|CodeRunner_OptionsDetail|
+
+
+==============================================================================
+  1. Motivation                                          *CodeRunner_Motivation*
+==============================================================================
+
+CodeRunner's main goal is to run code snippet easily. Just like other
+Editor for example VS code, they have code-runner plugin, and it is quite
+convenient to run the code with one key.
+
+For some tiny test or practicing some algorithm problems, it's a heavy
+operation to open an IDE like Eclipse, Intellij, or others. It's also annoying
+to focus out vim and type shell command to run our program. For interpreted
+language, maybe we can use vim-plugin "epeli/slimux" to execute code snippet
+quickly, but I don't think it's a good idea to send the whole buffer with it,
+especially when we need to modify our program a few times. Because the source
+code itself occupy too much space, and we can not see the program's real output
+easily.
+
+So after seeing the code-runner plugin for VS code, I really like it. And I
+searched github, and didn't find any code runner plugin for vim yet. So I
+wrote one. Hope this tiny plugin can make your coding life more easier.
+
+==============================================================================
+  2. Keymaps                                               *CodeRunner_Keymaps*
+==============================================================================
+
+This section discusses CodeRunner's default keybindings and how to customize
+them.
+
+CodeRunner makes running code snippet more convenient. When editing a snippet
+file, just shooting the command to see the execution result.
+
+<leader>B                                                Execute current file
+
+User can customize it like below: >
+    nmap <silent><leader>B <plug>CodeRunner
+
+==============================================================================
+  3. Options                                                *CodeRunner_Options*
+==============================================================================
+
+------------------------------------------------------------------------------
+ 3.1 Options Summary                                 *CodeRunner_OptionsSummary*
+------------------------------------------------------------------------------
+
+ Option                                 Description
+`````````````````````````````````   ````````````````````````````````````````
+g:code_runner_command_config_file       Config file path
+g:CodeRunnerCommandMap                  Command for each file type
+g:code_runner_save_before_execute       Save file first before execution
+g:code_runner_output_window_size        Config output window height
+
+------------------------------------------------------------------------------
+ 3.2 Options Details                                 *CodeRunner_OptionsDetail*
+------------------------------------------------------------------------------
+
+*g:code_runner_command_config_file*
+
+Specifies the location of a file that contains mappings of file type and
+commands.
+
+This file has a simple syntax used to logically link different files types.
+A simple configuration is shown below: >
+    javascript :: node $fileName
+    java :: javac $fileName && java $fileNameWithoutExt
+    c :: clang $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt
+    cpp :: clang++ -std=c++11 $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt
+    python :: python $fileName
+
+By default, this plugin will load a default config file which has limitted
+command associations(e.g. c++, java, python). Users can specify their own
+config file. If it is specified, the default config will not be loaded.
+
+*g:CodeRunnerCommandMap*
+
+Command mapping configured in this map will override the settings from config file.
+It is a map, and looks like below: >
+    let g:CodeRunnerCommandMap = {
+          \ 'python' : '   python $fileName'
+          \}
+
+*g:code_runner_save_before_execute* [default 0]
+
+By default, after file modification, user should save it first to check the
+execution result of the latest file. Setting to 1 will enable auto-save before
+the code execution.
+
+*g:code_runner_output_window_size* [default 15]
+
+By default, the output window is 15 lines high, user can define with this option.
+==============================================================================
+vim:tw=78:ts=4:ft=help:norl:fdm=marker

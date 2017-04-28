@@ -1,0 +1,24 @@
+" CodeRunnerCommandAssociations
+" Version 1.0
+"
+" This file is made up of Key-value pairs that associate file types.
+" Individual file extensions should only show up in one pair and in one line.
+" Behavior may be inconsistent if they show up in several.
+" ===================================================================
+" Variables can be used in commands as below:
+"   (e.g. I am editing file "/home/alice/test/hello.cpp")
+"   $dir                -> directory of current edit file (/home/alice/test/)
+"   $fileName           -> file name with extension (hello.cpp)
+"   $fileNameWithoutExt -> file name without extension (hello)
+
+javascript :: node $fileName
+java :: javac $fileName && java $fileNameWithoutExt && rm $fileNameWithoutExt.class
+c :: clang $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt && rm ./$fileNameWithoutExt
+cpp :: clang++ -std=c++11 $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt && rm ./$fileNameWithoutExt
+python :: python $fileName
+perl :: perl $fileName
+ruby :: ruby $fileName
+sh :: bash $fileName
+go :: go run $fileName
+lua :: lua $fileName
+php :: php $fileName
