@@ -26,7 +26,7 @@ override the default one. More details can be found with command
 
 ```vim
 let g:CodeRunnerCommandMap = {
-      \ 'python' : '   python $fileName'
+      \ 'python' : 'python $fileName'
       \}
 ```
 #### Save before execution
