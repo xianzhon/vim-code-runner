@@ -59,7 +59,7 @@ function! s:GetCommand(type)
     endif
 
     " Replace variables
-    let dirPath=expand('%:h') . '/'
+    let dirPath = expand('%:h') . '/'
     let fileNameWithoutExt = expand('%:t:r')
     let fileName = expand('%:t')
 
@@ -81,25 +81,26 @@ function! s:GetCommandConfigFile()
             return g:code_runner_command_config_file
         endif
         let sawError = 1
-        call CodeRunner#Error("The file specified by g:code_runner_command_config_file=" . g:code_runner_command_config_file . " cannot be read.")
+        call CodeRunner#Error("The file specified by g:code_runner_command_config_file = " .
+                    \ g:code_runner_command_config_file . " cannot be read.")
         call CodeRunner#Error("Attempting to look for 'CodeRunnerCommandAssociations' in other locations.")
     endif
 
-    let nextToSource=fnamemodify(s:CodeRunnerSourceFile, ":h")."/CodeRunnerCommandAssociations"
+    let nextToSource = fnamemodify(s:CodeRunnerSourceFile, ":h")."/CodeRunnerCommandAssociations"
     if filereadable(nextToSource)
         let g:CodeRunnerCommandConfigFile = nextToSource
     else
-        let VimfilesDirs=split(&runtimepath, ',')
+        let VimfilesDirs = split(&runtimepath, ',')
         for v in VimfilesDirs
-            let f = CodeRunner#BackToForwardSlash(v)."/plugin/CodeRunnerCommandAssociations"
+            let cfgFilePath = CodeRunner#BackToForwardSlash(v)."/plugin/CodeRunnerCommandAssociations"
             if filereadable(f)
-                let g:CodeRunnerCommandConfigFile=f
+                let g:CodeRunnerCommandConfigFile = cfgFilePath
             endif
         endfor
     endif
 
     if empty(g:CodeRunnerCommandConfigFile)
-        let g:CodeRunnerCommandConfigFile=""
+        let g:CodeRunnerCommandConfigFile = ""
     elseif sawError
         call CodeRunner#Error("    Found at: ".g:CodeRunnerCommandConfigFile)
         call CodeRunner#Error("    Please fix your configuration to suppress these messages!")
@@ -115,7 +116,7 @@ function! s:ParseCommandAssociationList()
     let s:Dict = {}
     if exists('g:CodeRunnerCommandMap')
         for key in keys(g:CodeRunnerCommandMap)
-            let s:Dict[key] =CodeRunner#Trim(g:CodeRunnerCommandMap[key])
+            let s:Dict[key] = CodeRunner#Trim(g:CodeRunnerCommandMap[key])
         endfor
     endif
     let filePath = s:GetCommandConfigFile()
@@ -190,12 +191,12 @@ function! s:CodeRunner()
         return
     endif
     let resList = systemlist(cmd)
-    let winName="CodeRunner.out"
+    let winName = "CodeRunner.out"
 
     if s:GotoWindowByName(winName) == 0
         " split the window; fit exactly right
         exe "keepjumps botright ".g:code_runner_output_window_size."sp " . winName
-        let isNewFile=1
+        let isNewFile = 1
         let lnum = 0
     else
         let lnum = line('$')
@@ -217,7 +218,7 @@ function! s:CodeRunner()
     endfor
 
     " place the cursor at the end of command output
-    execute lnum+1
+    execute lnum + 1
     " norm z.
 
     " Go to the source window from output window
