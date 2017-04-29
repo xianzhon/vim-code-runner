@@ -15,8 +15,8 @@ let s:CodeRunnerSourceFile=expand("<sfile>")
 if !exists("g:code_runner_save_before_execute")
     let g:code_runner_save_before_execute = 0
 endif
-if !exists("g:code_runner_ouput_window_size")
-    let g:code_runner_ouput_window_size = 15
+if !exists("g:code_runner_output_window_size")
+    let g:code_runner_output_window_size = 15
 endif
 
 " Common {{{
@@ -194,7 +194,7 @@ function! s:CodeRunner()
 
     if s:GotoWindowByName(winName) == 0
         " split the window; fit exactly right
-        exe "keepjumps botright ".g:code_runner_ouput_window_size."sp " . winName
+        exe "keepjumps botright ".g:code_runner_output_window_size."sp " . winName
         let isNewFile=1
         let lnum = 0
     else
