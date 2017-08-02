@@ -222,7 +222,7 @@ function! s:CodeRunner()
     " norm z.
 
     " Go to the source window from output window
-    wincmd w
+    wincmd p
     " setlocal nomodifiable
 endfunction
 " }}}
