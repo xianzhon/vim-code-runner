@@ -229,5 +229,5 @@ endfunction
 
 nnoremap <silent> <plug>CodeRunner :call <sid>CodeRunner()<CR>
 if !hasmapto("<plug>CodeRunner")
-    nnoremap <silent> <Leader>B <plug>CodeRunner
+    nmap <silent> <Leader>B <plug>CodeRunner
 endif
