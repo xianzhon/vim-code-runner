@@ -227,7 +227,7 @@ function! s:CodeRunner()
 endfunction
 " }}}
 
+nnoremap <silent> <plug>CodeRunner :call <sid>CodeRunner()<CR>
 if !hasmapto("<plug>CodeRunner")
-    nmap <silent> <Leader>B <plug>CodeRunner
-    nmap <silent> <unique> <script> <plug>CodeRunner :call <sid>CodeRunner()<CR>
+    nnoremap <silent> <Leader>B <plug>CodeRunner
 endif
