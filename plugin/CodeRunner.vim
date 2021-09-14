@@ -90,24 +90,24 @@ function! s:GetCommandConfigFile()
 
     let nextToSource = fnamemodify(s:CodeRunnerSourceFile, ":h")."/CodeRunnerCommandAssociations"
     if filereadable(nextToSource)
-        let g:CodeRunnerCommandConfigFile = nextToSource
+        let l:CodeRunnerCommandConfigFile = nextToSource
     else
         let VimfilesDirs = split(&runtimepath, ',')
         for v in VimfilesDirs
             let cfgFilePath = CodeRunner#BackToForwardSlash(v)."/plugin/CodeRunnerCommandAssociations"
-            if filereadable(f)
-                let g:CodeRunnerCommandConfigFile = cfgFilePath
+            if filereadable(cfgFilePath)
+                let l:CodeRunnerCommandConfigFile = cfgFilePath
             endif
         endfor
     endif
 
-    if empty(g:CodeRunnerCommandConfigFile)
-        let g:CodeRunnerCommandConfigFile = ""
+    if empty(l:CodeRunnerCommandConfigFile)
+        let l:CodeRunnerCommandConfigFile = ""
     elseif sawError
-        call CodeRunner#Error("    Found at: ".g:CodeRunnerCommandConfigFile)
+        call CodeRunner#Error("    Found at: ".l:CodeRunnerCommandConfigFile)
         call CodeRunner#Error("    Please fix your configuration to suppress these messages!")
     endif
-    return g:CodeRunnerCommandConfigFile
+    return l:CodeRunnerCommandConfigFile
 endfunction
 " }}}
 " ParseCommandAssociationList {{{
