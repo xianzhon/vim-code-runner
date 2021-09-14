@@ -50,7 +50,7 @@ endfunction
 
 " }}}
 " GetCommand {{{
-function! s:GetCommand(type)
+function! s:GetCommand(type)abort
     let cmdMaps = s:ParseCommandAssociationList()
     if has_key(cmdMaps, a:type)
         let strCmd = cmdMaps[a:type]
@@ -67,9 +67,11 @@ function! s:GetCommand(type)
     if strCmd !~ 'cd $dir'
         let strCmd = 'cd $dir && ' . strCmd
     endif
+
     let strCmd = substitute(strCmd, '$fileNameWithoutExt',fileNameWithoutExt,'gC')
     let strCmd = substitute(strCmd, '$fileName',fileName,'gC')
     let strCmd = substitute(strCmd, '$dir', dirPath,'gC')
+
     return strCmd
 endfunction
 
@@ -190,40 +192,13 @@ function! s:CodeRunner()
         call CodeRunner#Error("Unknow File Type: " . &ft . "!")
         return
     endif
-    let resList = systemlist(cmd)
+
+    echom cmd
     let winName = "CodeRunner.out"
+    let options= {"cwd":getcwd(),"term_rows":g:code_runner_output_window_size, "term_name":winName}
 
-    if s:GotoWindowByName(winName) == 0
-        " split the window; fit exactly right
-        exe "keepjumps botright ".g:code_runner_output_window_size."sp " . winName
-        let isNewFile = 1
-        let lnum = 0
-    else
-        let lnum = line('$')
-        call append(lnum, '')
-    end
+    exec "belowright terminal ++shell ++rows=".g:code_runner_output_window_size." ".cmd.""
 
-    call s:MapOutputWindowKeys()
-
-    setlocal bufhidden=delete
-    setlocal buftype=nofile
-    setlocal nobuflisted
-    setlocal noswapfile
-    setlocal cursorline
-
-    call append(lnum, "[Running] " . cmd)
-    for l:line in resList
-      let lnum = lnum + 1
-      call append(lnum, l:line)
-    endfor
-
-    " place the cursor at the end of command output
-    execute lnum + 1
-    " norm z.
-
-    " Go to the source window from output window
-    wincmd p
-    " setlocal nomodifiable
 endfunction
 " }}}
 
