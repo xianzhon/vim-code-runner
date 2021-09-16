@@ -8,6 +8,7 @@ JavaScript, PHP, Python, Perl, Ruby, Go, Lua**, etc.
 
 * Run code in current buffer
 * View code output in split window
+* Support user input in output window when the program reads from standard input
 * Make the command configable, user can override the settings
 
 ## Configurations
@@ -40,8 +41,8 @@ let g:code_runner_save_before_execute = 1
 ```
 
 ## TODOs
-* Prevent infinite-loop
-* Fix the output window
+* ~~Prevent infinite-loop~~ (Update on 2021/09/16: just press Ctrl+C in output window to stop the program)
+* ~~Fix the output window~~ (Update on 2021/09/16: with vim 8's terminal feature, now the plugin supports user input. Check [PR#3](https://github.com/xianzhon/vim-code-runner/pull/3))
 
 ## Thanks
 * vim-easygrep
