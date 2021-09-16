@@ -46,10 +46,20 @@ function! s:MapOutputWindowKeys()
     nnoremap <buffer> <silent> :    :call <sid>Echo("Type q to quit")<cr>
     nnoremap <buffer> <silent> q    :call <sid>Quit()<cr>
 endfunction
-"}}}
-
 " }}}
+" GetSafePath {{{
+function! s:GetSafePath(path)
+    " Wrap the path with double quotes if it contains space
+    if stridx(a:path, ' ') == -1
+        return a:path
+    endif
+    return '"' . a:path . '"'
+endfunction
+" }}}
+" }}} - End of Common
+
 " GetCommand {{{
+
 function! s:GetCommand(type)abort
     let cmdMaps = s:ParseCommandAssociationList()
     if has_key(cmdMaps, a:type)
@@ -58,24 +68,25 @@ function! s:GetCommand(type)abort
         return ''
     endif
 
-    " Replace variables
-    let dirPath = expand('%:h') . '/'
-    let fileNameWithoutExt = expand('%:t:r')
-    let fileName = expand('%:t')
+    " Replace path variables
+    let dirPath = s:GetSafePath(expand('%:h') . '/')
+    let fileNameWithoutExt = s:GetSafePath(expand('%:t:r'))
+    let fileName = s:GetSafePath(expand('%:t'))
 
     " Change to current directory if not given
     if strCmd !~ 'cd $dir'
         let strCmd = 'cd $dir && ' . strCmd
     endif
 
-    let strCmd = substitute(strCmd, '$fileNameWithoutExt',fileNameWithoutExt,'gC')
-    let strCmd = substitute(strCmd, '$fileName',fileName,'gC')
-    let strCmd = substitute(strCmd, '$dir', dirPath,'gC')
+    let strCmd = substitute(strCmd, '$fileNameWithoutExt', fileNameWithoutExt, 'gC')
+    let strCmd = substitute(strCmd, '$fileName', fileName, 'gC')
+    let strCmd = substitute(strCmd, '$dir', dirPath, 'gC')
 
     return strCmd
 endfunction
+" }}}
 
-" CodeRunnerCommandConfigFile {{{
+" GetCommandConfigFile {{{
 function! s:GetCommandConfigFile()
     let sawError = 0
     if exists("g:code_runner_command_config_file")
