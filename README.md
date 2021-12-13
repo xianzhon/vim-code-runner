@@ -11,6 +11,11 @@ JavaScript, PHP, Python, Perl, Ruby, Go, Lua**, etc.
 * Support user input in output window when the program reads from standard input
 * Make the command configable, user can override the settings
 
+## Supported vim version
+
+- vim 8.1+ (require the new `terminal` feature, [reference](https://www.vim.org/vim-8.1-released.php))
+- [Neovim 0.3.8+](https://github.com/neovim/neovim)
+
 ## Configurations
 
 #### Key-bindings
