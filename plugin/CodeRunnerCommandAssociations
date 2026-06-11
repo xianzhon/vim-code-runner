@@ -16,7 +16,7 @@ java :: javac $fileName && java $fileNameWithoutExt && rm $fileNameWithoutExt.cl
 c :: clang $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt && rm ./$fileNameWithoutExt
 cpp :: clang++ -std=c++11 $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt && rm ./$fileNameWithoutExt
 rust :: rustc $fileName && ./$fileNameWithoutExt && rm ./$fileNameWithoutExt
-python :: python $fileName
+python :: python3 $fileName
 perl :: perl $fileName
 ruby :: ruby $fileName
 sh :: bash $fileName

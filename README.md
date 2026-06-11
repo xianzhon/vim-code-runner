@@ -32,7 +32,7 @@ override the default one. More details can be found with command
 `:h CodeRunner`.
 
 ```vim
-let g:CodeRunnerCommandMap = {
+let g:code_runner_command_map = {
       \ 'python' : 'python $fileName'
       \}
 ```

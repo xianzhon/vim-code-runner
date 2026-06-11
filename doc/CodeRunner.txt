@@ -76,7 +76,7 @@ User can customize it like below: >
  Option                                 Description
  `````````````````````````````````   ````````````````````````````````````````
  g:code_runner_command_config_file       Config file path
- g:CodeRunnerCommandMap                  Command for each file type
+ g:code_runner_command_map                Command for each file type
  g:code_runner_save_before_execute       Save file first before execution
  g:code_runner_output_window_size        Config output window height
  g:code_runner_reuse_output_window       Reuse existing output window
@@ -102,11 +102,11 @@ By default, this plugin will load a default config file which has limitted
 command associations(e.g. c++, java, python). Users can specify their own
 config file. If it is specified, the default config will not be loaded.
 
-*g:CodeRunnerCommandMap*
+*g:code_runner_command_map*
 
 Command mapping configured in this map will override the settings from config file.
 It is a map, and looks like below: >
-    let g:CodeRunnerCommandMap = {
+    let g:code_runner_command_map = {
           \ 'python' : '   python $fileName'
           \}
 

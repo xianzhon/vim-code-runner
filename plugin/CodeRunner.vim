@@ -131,9 +131,9 @@ function! s:ParseCommandAssociationList()
         return s:Dict
     endif
     let s:Dict = {}
-    if exists('g:CodeRunnerCommandMap')
-        for key in keys(g:CodeRunnerCommandMap)
-            let s:Dict[key] = CodeRunner#Trim(g:CodeRunnerCommandMap[key])
+    if exists('g:code_runner_command_map')
+        for key in keys(g:code_runner_command_map)
+            let s:Dict[key] = CodeRunner#Trim(g:code_runner_command_map[key])
         endfor
     endif
     let filePath = s:GetCommandConfigFile()
