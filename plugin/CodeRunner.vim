@@ -18,6 +18,11 @@ endif
 if !exists("g:code_runner_output_window_size")
     let g:code_runner_output_window_size = 15
 endif
+if !exists("g:code_runner_reuse_output_window")
+    let g:code_runner_reuse_output_window = 1
+endif
+
+let s:term_bufnr = -1
 
 " Common {{{
 " Echo {{{
@@ -43,7 +48,6 @@ endfunction
 " }}}
 " MapOutputWindowKeys {{{
 function! s:MapOutputWindowKeys()
-    nnoremap <buffer> <silent> :    :call <sid>Echo("Type q to quit")<cr>
     nnoremap <buffer> <silent> q    :call <sid>Quit()<cr>
 endfunction
 " }}}
@@ -179,16 +183,15 @@ function! s:ParseCommandAssociationList()
     return s:Dict
 endfunction
 "}}}
-" GotoWindowByName {{{
-function! s:GotoWindowByName(bufname)
-    let bufmap = map(range(1, winnr('$')), '[bufname(winbufnr(v:val)), v:val]')
-
-    let a = filter(bufmap, 'v:val[0] =~ a:bufname')
-    if len(a) > 0 && len(a[0]) > 1
-        let thewindow = a[0][1]
-        execute thewindow 'wincmd w'
-        return 1
-    endif
+" GotoOutputWindow {{{
+function! s:GotoOutputWindow()
+    for i in range(1, winnr('$'))
+        let bname = bufname(winbufnr(i))
+        if bname =~# 'CodeRunner.out' || getbufvar(winbufnr(i), '&buftype') ==# 'terminal'
+            execute i . 'wincmd w'
+            return 1
+        endif
+    endfor
     return 0
 endfunction
 "}}}
@@ -204,16 +207,32 @@ function! s:CodeRunner()
         return
     endif
 
-    echom cmd
-    let winName = "CodeRunner.out"
-    let options= {"cwd":getcwd(),"term_rows":g:code_runner_output_window_size, "term_name":winName}
+    let srcwinnr = winnr()
+    if g:code_runner_reuse_output_window && s:GotoOutputWindow()
+        if has('nvim')
+            execute 'terminal ' . cmd
+        else
+            close!
+            execute "belowright terminal ++shell ++rows=" . g:code_runner_output_window_size . " " . cmd
+        endif
+        call s:MapOutputWindowKeys()
+        execute srcwinnr . 'wincmd w'
+        return
+    endif
 
+    let winName = "CodeRunner.out"
     if has('nvim')
         exec "belowright ".g:code_runner_output_window_size."sp ".winName." | terminal ".cmd
     else
         exec "belowright terminal ++shell ++rows=".g:code_runner_output_window_size." ".cmd
     endif
+    let s:term_bufnr = bufnr('%')
 
+    call s:MapOutputWindowKeys()
+
+    if g:code_runner_reuse_output_window
+        execute srcwinnr . 'wincmd w'
+    endif
 endfunction
 " }}}
 

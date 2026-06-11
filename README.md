@@ -10,6 +10,7 @@ JavaScript, PHP, Python, Perl, Ruby, Go, Lua**, etc.
 * View code output in split window
 * Support user input in output window when the program reads from standard input
 * Make the command configable, user can override the settings
+* Press `q` in output window to close it
 
 ## Supported vim version
 
@@ -43,6 +44,14 @@ before the code execution.
 
 ```vim
 let g:code_runner_save_before_execute = 1
+```
+
+#### Reuse output window
+By default, if the output window already exists, it will be reused instead of
+opening a new split.
+
+```vim
+let g:code_runner_reuse_output_window = 0  " always open new split
 ```
 
 ## TODOs

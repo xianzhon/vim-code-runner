@@ -59,6 +59,9 @@ file, just shooting the command to see the execution result.
 
 <leader>B                                                Execute current file
 
+Output window keymaps:
+q                                                        Quit output window
+
 User can customize it like below: >
     nmap <silent><leader>B <plug>CodeRunner
 
@@ -71,11 +74,12 @@ User can customize it like below: >
 ------------------------------------------------------------------------------
 
  Option                                 Description
-`````````````````````````````````   ````````````````````````````````````````
-g:code_runner_command_config_file       Config file path
-g:CodeRunnerCommandMap                  Command for each file type
-g:code_runner_save_before_execute       Save file first before execution
-g:code_runner_output_window_size        Config output window height
+ `````````````````````````````````   ````````````````````````````````````````
+ g:code_runner_command_config_file       Config file path
+ g:CodeRunnerCommandMap                  Command for each file type
+ g:code_runner_save_before_execute       Save file first before execution
+ g:code_runner_output_window_size        Config output window height
+ g:code_runner_reuse_output_window       Reuse existing output window
 
 ------------------------------------------------------------------------------
  3.2 Options Details                                 *CodeRunner_OptionsDetail*
@@ -115,5 +119,13 @@ the code execution.
 *g:code_runner_output_window_size* [default 15]
 
 By default, the output window is 15 lines high, user can define with this option.
+
+*g:code_runner_reuse_output_window* [default 1]
+
+When enabled (default), if the output window already exists, it will be reused
+for the next execution instead of opening a new split.
+
+Disable with: >
+    let g:code_runner_reuse_output_window = 0
 ==============================================================================
 vim:tw=78:ts=4:ft=help:norl:fdm=marker
