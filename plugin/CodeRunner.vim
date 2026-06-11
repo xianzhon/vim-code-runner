@@ -135,7 +135,7 @@ function! s:ParseCommandAssociationList()
     let filePath = s:GetCommandConfigFile()
 
     if empty(filePath)
-        call CodeRunenr#Error("Code Runner Command config file not exists!")
+        call CodeRunner#Error("Code Runner Command config file not exists!")
         return
     endif
 
