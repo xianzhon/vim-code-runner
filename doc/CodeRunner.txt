@@ -103,6 +103,17 @@ By default, this plugin will load a default config file which has limitted
 command associations(e.g. c++, java, python). Users can specify their own
 config file. If it is specified, the default config will not be loaded.
 
+Configuration is loaded in this priority:
+1. .coderunner in current file's directory
+2. .coderunner in project root (git repo detected)
+3. g:code_runner_command_config_file (explicit path)
+4. CodeRunnerCommandAssociations in plugin directory
+5. Default config from runtimepath
+
+To use per-project config, create a .coderunner file in your project
+directory with the same format as CodeRunnerCommandAssociations:
+  python :: python3 $fileName
+
 *g:code_runner_command_map*
 
 Command mapping configured in this map will override the settings from config file.

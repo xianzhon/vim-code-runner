@@ -36,12 +36,24 @@ let g:code_runner_command_map = {
       \ 'python' : 'python $fileName'
       \}
 ```
+
 #### Save before execution
+
 By default, the file is auto-saved before execution. To disable:
 
 ```vim
 let g:code_runner_save_before_execute = 0
+
+#### Per-project config
+Place a `.coderunner` file in your project directory or project root to override commands:
+
 ```
+python :: python3 $fileName
+node :: node --experimental-modules $fileName
+```
+
+Config priority: `.coderunner` in current dir > `.coderunner` in project root > `g:code_runner_command_config_file` > default config.
+
 
 #### Reuse output window
 By default, if the output window already exists, it will be reused instead of
