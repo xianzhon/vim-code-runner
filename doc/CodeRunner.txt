@@ -76,10 +76,11 @@ User can customize it like below: >
  Option                                 Description
  `````````````````````````````````   ````````````````````````````````````````
  g:code_runner_command_config_file       Config file path
- g:code_runner_command_map                Command for each file type
+ g:code_runner_command_map               Command for each file type
  g:code_runner_save_before_execute       Save file first before execution
  g:code_runner_output_window_size        Config output window height
  g:code_runner_reuse_output_window       Reuse existing output window
+ g:code_runner_focus_output_window       Focus output window after run
 
 ------------------------------------------------------------------------------
  3.2 Options Details                                 *CodeRunner_OptionsDetail*
@@ -127,5 +128,12 @@ for the next execution instead of opening a new split.
 
 Disable with: >
     let g:code_runner_reuse_output_window = 0
+
+*g:code_runner_focus_output_window* [default 0]
+
+When enabled, focus moves to the output window after running code. This is
+useful when the program requires user input. Default is to keep focus in the
+editor window. >
+    let g:code_runner_focus_output_window = 1
 ==============================================================================
 vim:tw=78:ts=4:ft=help:norl:fdm=marker

@@ -54,6 +54,14 @@ opening a new split.
 let g:code_runner_reuse_output_window = 0  " always open new split
 ```
 
+#### Focus output window
+By default, focus stays in the editor after running code. Set this to 1 to
+focus the output window instead (useful when program requires input):
+
+```vim
+let g:code_runner_focus_output_window = 1
+```
+
 ## TODOs
 * ~~Prevent infinite-loop~~ (Update on 2021/09/16: just press Ctrl+C in output window to stop the program)
 * ~~Fix the output window~~ (Update on 2021/09/16: with vim 8's terminal feature, now the plugin supports user input. Check [PR#3](https://github.com/xianzhon/vim-code-runner/pull/3))

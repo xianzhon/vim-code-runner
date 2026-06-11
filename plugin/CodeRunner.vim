@@ -21,6 +21,9 @@ endif
 if !exists("g:code_runner_reuse_output_window")
     let g:code_runner_reuse_output_window = 1
 endif
+if !exists("g:code_runner_focus_output_window")
+    let g:code_runner_focus_output_window = 0
+endif
 
 let s:term_bufnr = -1
 
@@ -216,7 +219,9 @@ function! s:CodeRunner()
             execute "belowright terminal ++shell ++rows=" . g:code_runner_output_window_size . " " . cmd
         endif
         call s:MapOutputWindowKeys()
-        execute srcwinnr . 'wincmd w'
+        if !g:code_runner_focus_output_window
+            execute srcwinnr . 'wincmd w'
+        endif
         return
     endif
 
@@ -230,7 +235,7 @@ function! s:CodeRunner()
 
     call s:MapOutputWindowKeys()
 
-    if g:code_runner_reuse_output_window
+    if !g:code_runner_focus_output_window
         execute srcwinnr . 'wincmd w'
     endif
 endfunction
