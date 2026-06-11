@@ -13,7 +13,7 @@
 let s:CodeRunnerSourceFile=expand("<sfile>")
 
 if !exists("g:code_runner_save_before_execute")
-    let g:code_runner_save_before_execute = 0
+    let g:code_runner_save_before_execute = 1
 endif
 if !exists("g:code_runner_output_window_size")
     let g:code_runner_output_window_size = 15

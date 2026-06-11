@@ -111,11 +111,10 @@ It is a map, and looks like below: >
           \ 'python' : '   python $fileName'
           \}
 
-*g:code_runner_save_before_execute* [default 0]
+*g:code_runner_save_before_execute* [default 1]
 
-By default, after file modification, user should save it first to check the
-execution result of the latest file. Setting to 1 will enable auto-save before
-the code execution.
+By default, the file is auto-saved before execution. To disable: >
+    let g:code_runner_save_before_execute = 0
 
 *g:code_runner_output_window_size* [default 15]
 

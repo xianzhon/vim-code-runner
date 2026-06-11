@@ -37,13 +37,10 @@ let g:code_runner_command_map = {
       \}
 ```
 #### Save before execution
-
-By default, after file modification, user should save it first to check the
-execution result of the latest file. With below setting, it will auto-save
-before the code execution.
+By default, the file is auto-saved before execution. To disable:
 
 ```vim
-let g:code_runner_save_before_execute = 1
+let g:code_runner_save_before_execute = 0
 ```
 
 #### Reuse output window
