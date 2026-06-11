@@ -95,15 +95,30 @@ endfunction
 
 " GetCommandConfigFile {{{
 function! s:GetCommandConfigFile()
-    let sawError = 0
+    " Check for .coderunner in current file's directory
+    let currentDir = expand('%:p:h')
+    let currentConfig = currentDir . '/.coderunner'
+    if filereadable(currentConfig)
+        return currentConfig
+    endif
+
+    " Check for .coderunner in project root (git repo)
+    let projectRoot = finddir('.git', currentDir . ';')
+    if !empty(projectRoot)
+        let projectRoot = fnamemodify(projectRoot, ':h')
+        let projectConfig = projectRoot . '/.coderunner'
+        if filereadable(projectConfig)
+            return projectConfig
+        endif
+    endif
+
+    " Fall back to global config
     if exists("g:code_runner_command_config_file")
         if filereadable(g:code_runner_command_config_file)
             return g:code_runner_command_config_file
         endif
-        let sawError = 1
         call CodeRunner#Error("The file specified by g:code_runner_command_config_file = " .
                     \ g:code_runner_command_config_file . " cannot be read.")
-        call CodeRunner#Error("Attempting to look for 'CodeRunnerCommandAssociations' in other locations.")
     endif
 
     let nextToSource = fnamemodify(s:CodeRunnerSourceFile, ":h")."/CodeRunnerCommandAssociations"
