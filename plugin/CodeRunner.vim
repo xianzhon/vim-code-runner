@@ -113,10 +113,12 @@ function! s:GetCommandConfigFile()
     endif
 
     " Fall back to global config
+    let userConfigFailed = 0
     if exists("g:code_runner_command_config_file")
         if filereadable(g:code_runner_command_config_file)
             return g:code_runner_command_config_file
         endif
+        let userConfigFailed = 1
         call CodeRunner#Error("The file specified by g:code_runner_command_config_file = " .
                     \ g:code_runner_command_config_file . " cannot be read.")
     endif
@@ -136,9 +138,8 @@ function! s:GetCommandConfigFile()
 
     if empty(l:CodeRunnerCommandConfigFile)
         let l:CodeRunnerCommandConfigFile = ""
-    elseif sawError
-        call CodeRunner#Error("    Found at: ".l:CodeRunnerCommandConfigFile)
-        call CodeRunner#Error("    Please fix your configuration to suppress these messages!")
+    elseif userConfigFailed
+        call CodeRunner#Info("Using default config: ".l:CodeRunnerCommandConfigFile)
     endif
     return l:CodeRunnerCommandConfigFile
 endfunction
@@ -156,46 +157,59 @@ function! s:ParseCommandAssociationList()
     endif
     let filePath = s:GetCommandConfigFile()
 
-    if empty(filePath)
-        call CodeRunner#Error("Code Runner Command config file not exists!")
-        return
+    if !empty(filePath) && filereadable(filePath)
+        let strLines = readfile(filePath)
+        let lineCounter = 0
+        for strLine in strLines
+            let lineCounter += 1
+            let strLine = CodeRunner#Trim(strLine)
+            if empty(strLine) || strLine[0] == "\""
+                continue
+            endif
+
+            let items = split(strLine, "::")
+            if len(items) != 2
+                call CodeRunner#Warning("Invalid strLine: ".strLine)
+                continue
+            endif
+
+            let sourceType = CodeRunner#Trim(items[0])
+            let exeCommand = CodeRunner#Trim(items[1])
+
+            if empty(sourceType) || empty(exeCommand)
+                call CodeRunner#Warning("Invalid strLine: ".strLine)
+                continue
+            endif
+            if !has_key(s:Dict, sourceType)
+                let s:Dict[sourceType] = exeCommand
+            endif
+        endfor
     endif
 
-    if !filereadable(filePath)
-        call CodeRunner#Error("Code Runner config file can't be read!")
-        return
-    endif
+    let defaultAssociations = fnamemodify(s:CodeRunnerSourceFile, ":h")."/CodeRunnerCommandAssociations"
+    if filereadable(defaultAssociations)
+        let strLines = readfile(defaultAssociations)
+        for strLine in strLines
+            let strLine = CodeRunner#Trim(strLine)
+            if empty(strLine) || strLine[0] == "\""
+                continue
+            endif
 
-    let strLines = readfile(filePath)
+            let items = split(strLine, "::")
+            if len(items) != 2
+                continue
+            endif
 
-    let lineCounter = 0
-    for strLine in strLines
-        let lineCounter += 1
-        let strLine = CodeRunner#Trim(strLine)
-        if empty(strLine) || strLine[0] == "\""
-            continue
-        endif
+            let sourceType = CodeRunner#Trim(items[0])
+            let exeCommand = CodeRunner#Trim(items[1])
 
-        let items = split(strLine, "::")
-        if len(items) != 2
-            call CodeRunner#Warning("Invalid strLine: ".strLine)
-            continue
-        endif
-
-        let sourceType = CodeRunner#Trim(items[0])
-        let exeCommand = CodeRunner#Trim(items[1])
-
-        if empty(sourceType) || empty(exeCommand)
-            call CodeRunner#Warning("Invalid strLine: ".strLine)
-            continue
-        endif
-        if !has_key(s:Dict, sourceType)
-            let s:Dict[sourceType] = exeCommand
-        endif
-    endfor
-    if lineCounter == 0
-        call CodeRunner#Warning("Code Runner config is empty!")
-        return
+            if empty(sourceType) || empty(exeCommand)
+                continue
+            endif
+            if !has_key(s:Dict, sourceType)
+                let s:Dict[sourceType] = exeCommand
+            endif
+        endfor
     endif
 
     return s:Dict

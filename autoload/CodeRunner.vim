@@ -5,6 +5,9 @@ endfunction
 function! CodeRunner#Warning(message)
     echohl WarningMsg | echomsg "[CodeRunner] Warning: ".a:message | echohl None
 endfunction
+function! CodeRunner#Info(message)
+    echohl ModeMsg | echomsg "[CodeRunner] ".a:message | echohl None
+endfunction
 "}}}
 " Trim {{{
 function! CodeRunner#Trim(s)
